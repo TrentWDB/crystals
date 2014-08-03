@@ -15,10 +15,6 @@ public class SettingsManager {
     private static final FileHandle SETTINGS_FILE_HANDLE = new FileHandle("res/config/settings.json");
     private static final double MAX_ASPECT_RATIO = 1920.0 / 1080;
 
-    static {
-        loadSettings();
-    }
-
     public static int[] getResolution() {
         return settings.getResolution();
     }

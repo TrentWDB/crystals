@@ -6,32 +6,26 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.google.gson.Gson;
 import com.mygdx.crystals.managers.FontManager;
+import com.mygdx.crystals.managers.RenderManager;
 import com.mygdx.crystals.managers.SettingsManager;
-import com.mygdx.crystals.models.Settings;
-import com.mygdx.crystals.renderers.TitleScreen;
-import com.mygdx.crystals.utilities.FixedPoint;
+import com.mygdx.crystals.renderers.mainmenu.TitleScreenRenderer;
 
 public class Crystals extends ApplicationAdapter implements ApplicationListener {
 	public static SpriteBatch batch;
     public static final OrthographicCamera cam = new OrthographicCamera();
-
-    TitleScreen titleScreen;
 	
 	@Override
 	public void create() {
-        batch = new SpriteBatch();//TODO might also be a bad idea?
-        int[] resolution = SettingsManager.getResolution();
-        cam.setToOrtho(false, resolution[0], resolution[1]);
+        batch = new SpriteBatch();
 
-        FontManager.generateFonts();
+        initialize();
+    }
 
-        long time1 = System.currentTimeMillis();
-
-        titleScreen.generateFrames();
-
-        System.out.println("generating title screen took " + (System.currentTimeMillis() - time1));
+    public void initialize() {
+        SettingsManager.loadSettings();
+        FontManager.initialize();
+        RenderManager.initialize();
     }
 
 	@Override
@@ -39,7 +33,7 @@ public class Crystals extends ApplicationAdapter implements ApplicationListener 
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        titleScreen.render();
+        RenderManager.getRenderObject().render();
 	}
 
     @Override

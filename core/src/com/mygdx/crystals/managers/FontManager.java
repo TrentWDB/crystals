@@ -17,17 +17,25 @@ public class FontManager {
     private static final FileHandle titleScreenMenuFileHandle
             = Gdx.files.internal("res/fonts/NeutraDisplay-MediumAlt.ttf");
 
+
+    public static void initialize() {
+        generateFonts();
+    }
+
     public static void generateFonts() {
+        int[] resolution = SettingsManager.getResolution();
+        double multRatio = resolution[1] / 1080.0 * Gdx.graphics.getDensity();
+
         FreeTypeFontGenerator titleScreenTitleFontGenerator
                 = new FreeTypeFontGenerator(titleScreenTitleFileHandle);
-        titleScreenTitleFont = titleScreenTitleFontGenerator.generateFont(400);
+        titleScreenTitleFont = titleScreenTitleFontGenerator.generateFont((int) (670 * multRatio));
         titleScreenTitleFont.setColor(222 / 255f, 0 / 255f, 255 / 255f, 150 / 255f);
         titleScreenTitleFontGenerator.dispose();
 
         FreeTypeFontGenerator titleScreenMenuFontGenerator
                 = new FreeTypeFontGenerator(titleScreenMenuFileHandle);
-        titleScreenMenuFont = titleScreenMenuFontGenerator.generateFont(400);
-        titleScreenMenuFont.setColor(222 / 255f, 0 / 255f, 255 / 255f, 150 / 255f);
+        titleScreenMenuFont = titleScreenMenuFontGenerator.generateFont((int) (140 * multRatio));
+        titleScreenMenuFont.setColor(255 / 255f, 255 / 255f, 255 / 255f, 200 / 255f);
         titleScreenMenuFontGenerator.dispose();
     }
 
@@ -38,5 +46,9 @@ public class FontManager {
 
         int[] bounds = {width, height};
         return bounds;
+    }
+
+    public static int getRealHeight(BitmapFont font) {
+        return (int) (font.getCapHeight() - font.getDescent());
     }
 }
