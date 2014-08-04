@@ -11,12 +11,14 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 public class FontManager {
     public static BitmapFont titleScreenTitleFont;
     public static BitmapFont titleScreenMenuFont;
+    public static BitmapFont abilityBarNumberFont;
 
     private static final FileHandle titleScreenTitleFileHandle
             = Gdx.files.internal("res/fonts/NeutraDisplay-BoldAlt.ttf");
     private static final FileHandle titleScreenMenuFileHandle
             = Gdx.files.internal("res/fonts/NeutraDisplay-MediumAlt.ttf");
-
+    private static final FileHandle abilityBarNumberFileHandle
+            = Gdx.files.internal("res/fonts/NeutraDisplay-BoldAlt.ttf");
 
     public static void initialize() {
         generateFonts();
@@ -29,14 +31,20 @@ public class FontManager {
         FreeTypeFontGenerator titleScreenTitleFontGenerator
                 = new FreeTypeFontGenerator(titleScreenTitleFileHandle);
         titleScreenTitleFont = titleScreenTitleFontGenerator.generateFont((int) (670 * multRatio));
-        titleScreenTitleFont.setColor(222 / 255f, 0 / 255f, 255 / 255f, 150 / 255f);
         titleScreenTitleFontGenerator.dispose();
+        titleScreenTitleFont.setColor(FinalManager.COLOR_TITLE_SCREEN_TITLE_FONT);
 
         FreeTypeFontGenerator titleScreenMenuFontGenerator
                 = new FreeTypeFontGenerator(titleScreenMenuFileHandle);
         titleScreenMenuFont = titleScreenMenuFontGenerator.generateFont((int) (140 * multRatio));
-        titleScreenMenuFont.setColor(255 / 255f, 255 / 255f, 255 / 255f, 200 / 255f);
         titleScreenMenuFontGenerator.dispose();
+        titleScreenMenuFont.setColor(FinalManager.COLOR_TITLE_SCREEN_MENU_FONT);
+
+        FreeTypeFontGenerator abilityBarNumberFontGenerator
+                = new FreeTypeFontGenerator(abilityBarNumberFileHandle);
+        abilityBarNumberFont = abilityBarNumberFontGenerator.generateFont((int) (40 * multRatio));
+        abilityBarNumberFontGenerator.dispose();
+        abilityBarNumberFont.setColor(FinalManager.COLOR_BLACK);
     }
 
     public static int[] getRealBounds(BitmapFont font, String string) {

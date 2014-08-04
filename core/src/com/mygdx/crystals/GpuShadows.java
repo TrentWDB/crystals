@@ -185,16 +185,6 @@ public class GpuShadows implements ApplicationListener {
 
         batch.draw(casterSprites, 0, 0);
 
-        //DEBUG RENDERING -- show occluder map and 1D shadow map
-        //batch.setColor(Color.BLACK);
-        //batch.draw(occluders, Gdx.graphics.getWidth()-lightSize, 0);
-        //batch.setColor(Color.WHITE);
-        //batch.draw(shadowMap1D, Gdx.graphics.getWidth()-lightSize, lightSize+5);
-
-        //DEBUG RENDERING -- show light
-        //batch.draw(light, mx-light.getWidth()/2f, my-light.getHeight()/2f); //mouse
-        //batch.draw(light, Gdx.graphics.getWidth()-lightSize/2f-light.getWidth()/2f, lightSize/2f-light.getHeight()/2f);
-
         //draw FPS
         font.drawMultiLine(batch, "FPS: "+Gdx.graphics.getFramesPerSecond()
                 +"\n\nLights: "+lights.size

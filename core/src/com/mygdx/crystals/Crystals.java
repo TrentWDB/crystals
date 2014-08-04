@@ -6,14 +6,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.crystals.interfaces.Renderer;
+import com.mygdx.crystals.managers.AbilityBarManager;
 import com.mygdx.crystals.managers.FontManager;
 import com.mygdx.crystals.managers.RenderManager;
 import com.mygdx.crystals.managers.SettingsManager;
-import com.mygdx.crystals.renderers.mainmenu.TitleScreenRenderer;
+
+import java.util.List;
 
 public class Crystals extends ApplicationAdapter implements ApplicationListener {
-	public static SpriteBatch batch;
-    public static final OrthographicCamera cam = new OrthographicCamera();
+	public static SpriteBatch batch;//TODO static might be a bad idea idk
+    public static final OrthographicCamera cam = new OrthographicCamera();//TODO same here idk
 	
 	@Override
 	public void create() {
@@ -25,15 +28,19 @@ public class Crystals extends ApplicationAdapter implements ApplicationListener 
     public void initialize() {
         SettingsManager.loadSettings();
         FontManager.initialize();
+        AbilityBarManager.initialize();
         RenderManager.initialize();
     }
 
 	@Override
 	public void render() {
-        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        RenderManager.getRenderObject().render();
+        List<Renderer> rendererList = RenderManager.getRenderObjects();
+        for (int i = 0; i < rendererList.size(); i++) {
+            rendererList.get(i).render();
+        }
 	}
 
     @Override

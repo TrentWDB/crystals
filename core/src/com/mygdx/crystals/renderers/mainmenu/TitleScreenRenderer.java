@@ -29,14 +29,17 @@ public class TitleScreenRenderer implements Renderer {
     private static FrameBuffer[] menuImageFBOArray;
 
     public TitleScreenRenderer() {
+    }
+
+    public void init() {
+        generateFrames();
+    }
+
+    public void resize() {
         generateFrames();
     }
 
     public void generateFrames() {
-        SpriteBatch batch = Crystals.batch;
-        OrthographicCamera cam = Crystals.cam;
-        int[] resolution = SettingsManager.getResolution();
-
         bgImageTextureArray = new Texture[1];
         menuImageFBOArray = new FrameBuffer[TitleScreenManager.titleScreenMenuOptions.length];
 
@@ -52,12 +55,7 @@ public class TitleScreenRenderer implements Renderer {
     }
 
     private static void renderBgImages() throws IOException {
-        SpriteBatch batch = Crystals.batch;
-        OrthographicCamera cam = Crystals.cam;
         int[] resolution = SettingsManager.getResolution();
-
-        cam.setToOrtho(false, resolution[0], resolution[1]);
-        batch.setProjectionMatrix(cam.combined);
 
         //load full background image
         File fullBgImageFile = Gdx.files.internal("res/images/background01.png").file();
@@ -94,12 +92,13 @@ public class TitleScreenRenderer implements Renderer {
 
         int[] textBounds = FontManager.getRealBounds(FontManager.titleScreenTitleFont, "crystals");
 
+        if (titleImageFBO != null)
+            titleImageFBO.dispose();
+        titleImageFBO = new FrameBuffer(Pixmap.Format.RGBA8888, textBounds[0], textBounds[1], false);
+
         //zoom in on the frame buffer to keep perspective
         cam.setToOrtho(false, textBounds[0], textBounds[1]);
         batch.setProjectionMatrix(cam.combined);
-
-        titleImageFBO = new FrameBuffer(Pixmap.Format.RGBA8888, textBounds[0], textBounds[1], false);
-
         titleImageFBO.begin();
             batch.begin();
 
@@ -122,8 +121,14 @@ public class TitleScreenRenderer implements Renderer {
             batch.setProjectionMatrix(cam.combined);
 
             //generate the plain text
+            if (menuImageFBOArray[i] != null)
+                menuImageFBOArray[i].dispose();
             FrameBuffer menuTextFBO = new FrameBuffer(Pixmap.Format.RGBA8888, menuTextBounds[0], menuTextBounds[1], false);
             menuImageFBOArray[i] = menuTextFBO;
+
+            //zoom in on the frame buffer to keep perspective
+            cam.setToOrtho(false, menuTextBounds[0], menuTextBounds[1]);
+            batch.setProjectionMatrix(cam.combined);
             menuTextFBO.begin();
                 batch.begin();
 
@@ -142,9 +147,6 @@ public class TitleScreenRenderer implements Renderer {
         OrthographicCamera cam = Crystals.cam;
         int[] resolution = SettingsManager.getResolution();
 
-        batch.setProjectionMatrix(cam.combined);
-        cam.setToOrtho(false, resolution[0], resolution[1]);
-
         Texture curBgTexture = bgImageTextureArray[0];
 
         TextureRegion curTitleTextureRegion = new TextureRegion(titleImageFBO.getColorBufferTexture());
@@ -158,6 +160,8 @@ public class TitleScreenRenderer implements Renderer {
         int menuTextStartY = resolution[1] / 2 - fontHeight;
         int menuTextLineHeight = fontHeight;
 
+        cam.setToOrtho(false, resolution[0], resolution[1]);
+        batch.setProjectionMatrix(cam.combined);
         batch.begin();
 
             batch.draw(curBgTexture, 0, 0);
